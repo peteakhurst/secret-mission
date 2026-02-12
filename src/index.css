@@ -1,14 +1,14 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Nunito Sans", system-ui, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-size: 16px;
 
   color: rgba(255, 255, 255, 0.87);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffa8a8;
+
 }
 
 a {
@@ -43,8 +43,16 @@ body {
   height: 100%;
 }
 
+.beth {
+  font-family: "Beth Ellen", Arial, sans-serif;
+}
+
+.love-light {
+  font-family: "Love Light", Arial, sans-serif;
+}
+
 h1 {
-  font-size: 3.2em;
+  font-size: 1.5em;
   line-height: 1.1;
 }
 

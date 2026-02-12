@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import './App.css'
 
@@ -7,12 +7,34 @@ import Lottie from "lottie-react";
 import loveCat from "./assets/love-cat.json";
 import heartsAnim from "./assets/hearts.json";
 
-const DEV_MODE = true;
+import dateNight from "./assets/photos/dateNight.jpeg";
+import firstmet from "./assets/photos/firstmet.jpeg";
+import kissykissy from "./assets/photos/kissykissy.jpeg";
+import picnic from "./assets/photos/picnic.jpeg";
+import poolside from "./assets/photos/poolside.jpeg";
+import roo1 from "./assets/photos/roo1.jpeg";
+import tennis from "./assets/photos/tennis.jpeg";
+import thatOneTime from "./assets/photos/thatOneTime.png";
+import truth from "./assets/photos/truth.jpeg";
+
+const DEV_MODE = false;
 
 // Simplified flow per stop:
 // 1) Show question
 // 2) Correct answer reveals place + clue + task
 // 3) Button moves to next stop (no extra unlock code)
+
+const slides = [
+  truth,
+  dateNight,
+  firstmet,
+  kissykissy,
+  picnic,
+  poolside,
+  roo1,
+  tennis,
+  thatOneTime
+];
 
 const stops = [
   {
@@ -85,14 +107,52 @@ export default function App() {
   const [fadeCelebrate, setFadeCelebrate] = useState(false);
 
   const [started, setStarted] = useState(false);
-  const [playerName, setPlayerName] = useState("");
 
   const [showHint, setShowHint] = useState(false);
 
   const stop = stops[index];
 
+  const [phaseApp, setPhaseApp] = useState("countdown");
+  const [timeLeft, setTimeLeft] = useState("");
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const TARGET_DATE = new Date("2026-02-14T13:30:00");
+
+  // countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const diff = TARGET_DATE - now;
+
+      if (diff <= 0) {
+        setTimeLeft("Ready ❤️");
+        return;
+      }
+
+      const h = Math.floor(diff / 1000 / 60 / 60);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      setTimeLeft(`${h}h ${m}m ${s}s`);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+
+  // slideshow rotator
+  useEffect(() => {
+    const rotator = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(rotator);
+  }, []);
+
+  function randomTilt() {
+    return Math.random() * 12 - 6; // -6° to +6°
+  }
+
   function startHunt() {
-    if (playerName.trim().length === 0) return;
     setStarted(true);
   }
 
@@ -144,6 +204,32 @@ export default function App() {
     }
   }
 
+  if (phaseApp === "countdown") {
+    return (
+      <div style={styles.countdownPage}>
+        <div style={styles.polaroidStage}>
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={slideIndex}
+              initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              transition={{ duration: 1.2 }}
+              style={styles.polaroid}
+            >
+              <img src={slides[slideIndex]} style={styles.polaroidImg} />
+              <div style={styles.polaroidCaption}>Our Moments ❤️</div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <div style={styles.countdownSection}>
+          <h1 style={styles.countdownHeading}>Our Adventure Begins In</h1>
+          <h2 style={styles.countdownTime}>{timeLeft}</h2>
+        </div>
+      </div>
+    );
+  }
+
   if (!started) {
     return (
       <div style={styles.page}>
@@ -152,27 +238,22 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           style={styles.card}
         >
-          <h1>❤️ Valentines Day Adventure</h1>
-          <h3>A Richmond Scavenger Hunt</h3>
+          <h1 className="beth">Let's spend some koality time together</h1>
 
           <p style={{ marginTop: 16 }}>
-            Before we begin… who is this adventure for?
+            Before we begin… are you ready to start ?
           </p>
 
-          <input
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            placeholder="Enter your name"
-            style={styles.input}
-          />
 
           <button onClick={startHunt} style={styles.button}>
-            Start Adventure →
+            Start Adventure
           </button>
         </motion.div>
       </div>
     );
   }
+
+
 
   return (
     <>
@@ -221,12 +302,11 @@ export default function App() {
               />
             </motion.div>
           )}
-          <h2>❤️ Valentines Day Adventure</h2>
-          <h4>A Scavenger Hunt</h4>
+          <h3 className="beth" style={{ textWrap: "nowrap" }}>Valentines Day Adventure</h3>
 
           {phase === "question" ? (
             <>
-              <h2>Answer to reveal the next place</h2>
+              <h4 className="love-light" style={{ fontWeight: "bold" }}>Answer to reveal the next place</h4>
               <p style={{ marginTop: 10 }}>{stop.question}</p>
 
               <input
@@ -310,6 +390,66 @@ const styles = {
     padding: "2em",
     color: "#020202",
     overflow: "auto",
+  },
+  countdownPage: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "2em",
+  },
+  polaroidStage: {
+    position: "relative",
+    minHeight: 420,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  countdownSection: {
+    marginTop: 24,
+    padding: "0 20px",
+    textAlign: "center",
+    color: "#1f2937",
+  },
+  countdownHeading: {
+    margin: 0,
+    fontSize: "1.5rem",
+    fontWeight: 600,
+    color: "#fafafa",
+  },
+  countdownTime: {
+    margin: "12px 0 0",
+    fontSize: "2rem",
+    fontWeight: 700,
+    color: "#fafafa",
+  },
+
+  polaroid: {
+    position: "absolute",
+    width: 360,
+    background: "white",
+    padding: 12,
+    paddingBottom: 26,
+    borderRadius: 6,
+    boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
+  },
+
+  polaroidImg: {
+    width: "100%",
+    height: 320,
+    objectFit: "cover",
+    objectPosition: "center center",
+    background: "#f3f4f6",  // subtle matte behind photo
+    borderRadius: 2,
+  },
+
+  polaroidCaption: {
+    textAlign: "center",
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: 500,
+    color: "#1f2937",
   },
   card: {
     position: "relative",
