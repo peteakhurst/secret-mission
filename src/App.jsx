@@ -50,60 +50,90 @@ const stops = [
   {
     question: "Let’s rewind to the beginning, where two glasses met before we really knew what we were starting.",
     answer: "cherry",
-    title: "Start - Cherry Tree Hotel",
-    clue: `Our story didn’t start with once upon a time — it started with a drink, a laugh, and what we both wanted.
-Where the cherry doesn’t grow on a tree — but poured in one glass, shared with me.`,
+    title: "Stop 1: Cherry Tree Hotel",
+    clue: `Our story didn’t start with once upon a time — it started with a drink, a laugh, and what we both wanted in life.
+Where the cherry doesn’t grow on a tree — but poured in one glass, shared with me. `,
     task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside.",
   },
   {
     question: "His name is on the door, But he’s not the bartender (probably).",
     answer: "fred",
-    title: "Fred’s Bar",
+    title: "Stop 2: Fred’s Bar",
     clue: `Not mine, not yours — but Fred’s instead. Where stories were shared and thing's was said.`,
-    task: "Ask one future-date question.",
+    task: "Order the sourdough and some drinks and sit outside.",
   },
   {
     question: "One grows in soil, one’s poured in a cup, put them together — that’s our next stop.",
     answer: "lilac",
-    title: "Lilac Wine",
-    clue: `A color, a flower, and also a wine. Soft like the mood when we slowed the pace.`,
+    title: "Stop 3: Lilac Wine",
+    clue: `A color, a flower, and also a wine. these are some of your favorite things.`,
     task: "Share something you appreciated early in our relationship but never said.",
   },
-
   {
     question: "Where things are forged with fire and art — like good drinks, good talks, and the start of a heart.",
     answer: "blacksmith",
-    title: "Blacksmith",
+    title: "Stop 4: Blacksmith",
     clue: `Where things are forged with fire and art —
 like good drinks, good talks, and the start of a heart.`,
-    task: "Toast: one thing you liked then vs now.",
+    task: "Toast: one thing we must do this year, travel, holiday, or something else.",
   },
   {
     question: "Which rooftop spot did we go to in Richmond, that can be a 'drag' ?",
     answer: "harlow",
-    title: "Harlow Bar",
+    title: "Stop 5: Harlow Bar",
     clue: `Up we went where the city could see us,
-where we talked louder and laughed freer.
-Find the rooftop where our night had height —
-and everything felt easy and right.`,
-    task: "Take a selfie recreating an early-date vibe photo.",
+where we thought we were alone. Lets head to the rooftop and reclaim it as our own.`,
+    task: "Take a selfie recreating an early-date vibe photo and share it with me.",
   },
   {
     question: "A house by name, not by design! Where to next?",
     answer: "union",
-    title: "Union House",
+    title: "Stop 6: Union House",
     clue: `A house with no bedrooms, but plenty of cheer.
-We didn’t live there — but memories do —
-go back and make another with two.`,
-    task: "Each write one favorite memory from your first 3 months.",
+We didn’t live there — but memories do.`,
+    task: "Each write one favorite memory from our first 3 months, this can be shared at the next stop.",
   },
   {
     question: "There’s a place in our story waiting for a rewrite.",
     answer: "spelt",
-    title: "Finish — Spelt Pizzeria",
-    clue: `We end where dough meets fire and heat —
-something better than we expected to find.`,
-    task: "Present your final note, kiss or what you would like to do next❤️",
+    title: "Stop 7: Spelt Pizzeria",
+    clue: "Let's reclaim a bad memory, to a better one. Just add garlic (bread)",
+    task: "Present your final note, kiss or choose what you would like to do next below ❤️",
+  },
+];
+
+const eveningActivities = [
+  {
+    id: 0,
+    title: "Continue on with drinks and dessert",
+    emoji: "🍽️",
+    description: "We can head to the cinema room, to watch a movie and have some drinks. You've earned it after your adventure!",
+    details: "No words needed, lets just go and enjoy each other ❤️",
+    url: " "
+  },
+  {
+    id: 1,
+    title: "Symphony in the Park",
+    emoji: "🎶",
+    description: "Go to the Symphony in the Park and enjoy the music.",
+    details: "We can go to IGA grab some snacks and head to the bowl to watch some symphony in the park",
+    url: "https://www.artscentremelbourne.com.au/whats-on/2026/seasons/mso/50-years-of-abc-classic",
+  },
+  {
+    id: 2,
+    title: "Go ice skating",
+    emoji: "⛸️",
+    description: "We can go ice skating and have some fun",
+    details: "An activity to end the adventure on a fun note",
+    url: "https://obrienicehouse.com.au/"
+  },
+  {
+    id: 3,
+    title: "IOU: A romantic dinner and Wuthering Heights date",
+    emoji: "💰",
+    description: "We can go to a restaurant and have a romantic dinner and watch Wuthering Heights",
+    details: "A romantic dinner and Wuthering Heights date",
+    url: ""
   },
 ];
 
@@ -120,6 +150,8 @@ export default function App() {
 
   const [showHint, setShowHint] = useState(false);
   const [wrongGuessCount, setWrongGuessCount] = useState(0);
+  const [activeModal, setActiveModal] = useState(null);
+  const [heartFlyAnim, setHeartFlyAnim] = useState(null);
 
   const stop = stops[index];
 
@@ -128,6 +160,23 @@ export default function App() {
   const [slideIndex, setSlideIndex] = useState(0);
 
   const TARGET_DATE = new Date("2026-02-14T13:30:00");
+
+  // Dev bypass: run in console to skip countdown or jump to evening activities
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      window.__skipCountdown = () => setPhaseApp("welcome");
+      window.__showEveningActivities = () => {
+        setPhaseApp("welcome");
+        setStarted(true);
+        setIndex(stops.length - 1);
+        setPhase("place");
+      };
+    }
+    return () => {
+      delete window.__skipCountdown;
+      delete window.__showEveningActivities;
+    };
+  }, []);
 
   // countdown timer
   useEffect(() => {
@@ -159,9 +208,14 @@ export default function App() {
     return () => clearInterval(rotator);
   }, []);
 
-  function randomTilt() {
-    return Math.random() * 12 - 6; // -6° to +6°
-  }
+  // Load heart-fly Lottie for evening activities background
+  useEffect(() => {
+    fetch("https://lottie.host/4E1YKrHWvy.json")
+      .then((r) => r.json())
+      .then(setHeartFlyAnim)
+      .catch(() => setHeartFlyAnim(heartsAnim));
+  }, []);
+
 
   function startHunt() {
     setStarted(true);
@@ -202,6 +256,7 @@ export default function App() {
     setError(false);
     setShowHint(false);
     setWrongGuessCount(0);
+    setActiveModal(null);
   }
 
   function cheatReveal() {
@@ -262,14 +317,12 @@ export default function App() {
 
 
           <button onClick={startHunt} style={styles.button}>
-            Start Adventure
+            Start Adventure →
           </button>
         </motion.div>
       </div>
     );
   }
-
-
 
   return (
     <>
@@ -322,7 +375,7 @@ export default function App() {
 
           {phase === "question" ? (
             <>
-              <h4 className="love-light" style={{ fontWeight: "bold" }}>Answer to reveal the next place</h4>
+              <h4 style={{ fontWeight: "bold" }}>Answer to reveal the next place</h4>
               <p style={{ marginTop: 10 }}>{stop.question}</p>
 
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -373,40 +426,118 @@ export default function App() {
           ) : (
             <>
               <h2>{stop.title}</h2>
-              <pre style={styles.clue}>{stop.clue}</pre>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <pre style={styles.clue}>{stop.clue}</pre>
+              </div>
 
               <div style={styles.taskBox}>
                 <strong>Mini Mission:</strong>
                 <p>{stop.task}</p>
               </div>
 
-              <div style={styles.buttonRow}>
-                <button
-                  onClick={() => setShowHint(true)}
-                  style={{ ...styles.button, background: "#f59e0b", marginTop: 0 }}
-                >
-                  Hint 💡
-                </button>
-                {index < stops.length - 1 ? (
+              {index < stops.length - 1 ? (
+                <div style={styles.buttonRow}>
+                  <div />
                   <button onClick={nextStop} style={{ ...styles.button, marginTop: 0 }}>
                     Next Stop →
                   </button>
-                ) : (
-                  <button onClick={reset} style={{ ...styles.button, marginTop: 0 }}>
-                    Restart Hunt
-                  </button>
-                )}
-              </div>
-
-              {showHint && (
-                <p style={{ marginTop: 10, fontStyle: "italic" }}>
-                  Hint: The answer is <strong>{stop.answer}</strong>
-                </p>
+                </div>
+              ) : (
+                <>
+                  <div style={styles.activityCardsWrapper}>
+                    {heartFlyAnim && (
+                      <div style={styles.heartFlyBg}>
+                        <Lottie
+                          animationData={heartFlyAnim}
+                          loop
+                          style={{ height: "100%", width: "100%", opacity: 0.6 }}
+                        />
+                      </div>
+                    )}
+                    <p style={{ marginTop: 20, textAlign: "center", fontWeight: 600, position: "relative", zIndex: 1 }}>
+                      Choose your surprise for tonight ❤️
+                    </p>
+                    <div style={styles.activityCards}>
+                      {eveningActivities.map((activity, i) => (
+                        <motion.button
+                          key={activity.id}
+                          onClick={() => setActiveModal(activity.id)}
+                          style={styles.activityCard}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span style={styles.activityEmoji}>🎁</span>
+                          <span style={styles.activityTitle}>Surprise {i + 1}</span>
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={styles.buttonRow}>
+                    <div />
+                    <button onClick={reset} style={{ ...styles.button, marginTop: 0 }}>
+                      Restart Hunt
+                    </button>
+                  </div>
+                </>
               )}
             </>
           )}
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {activeModal !== null && (
+          <motion.div
+            style={styles.modalOverlay}
+            onClick={() => setActiveModal(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              style={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              {(() => {
+                const activity = eveningActivities[activeModal];
+                if (!activity) return null;
+                return (
+                  <>
+                    <div style={styles.modalHeader}>
+                      <span style={styles.modalEmoji}>{activity.emoji}</span>
+                      <h3 style={styles.modalTitle}>{activity.title}</h3>
+                      <button
+                        style={styles.modalClose}
+                        onClick={() => setActiveModal(null)}
+                        aria-label="Close"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <p style={styles.modalDescription}>{activity.description}</p>
+                    <p style={styles.modalDetails}>{activity.details}</p>
+                    {activity.url && (
+                      <a
+                        href={activity.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={styles.learnMoreLink}
+                      >
+                        Learn more →
+                      </a>
+                    )}
+                  </>
+                );
+              })()}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 
@@ -495,13 +626,124 @@ const styles = {
   },
   clue: {
     whiteSpace: "pre-wrap",
-    fontFamily: "inherit",
+    fontFamily: '"Cormorant Garamond", Georgia, serif',
+    fontSize: "1.15rem",
+    fontStyle: "italic",
+    lineHeight: 1.7,
+    textAlign: "center",
+    maxWidth: 420,
+    padding: "0 8px",
   },
   taskBox: {
     background: "#fff1f2",
     padding: 12,
     borderRadius: 10,
     marginTop: 12,
+  },
+  activityCardsWrapper: {
+    position: "relative",
+    minHeight: 120,
+  },
+  heartFlyBg: {
+    position: "absolute",
+    inset: "-20%",
+    pointerEvents: "none",
+    zIndex: 0,
+  },
+  activityCards: {
+    position: "relative",
+    zIndex: 1,
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 12,
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  activityCard: {
+    flex: "1 1 100px",
+    minWidth: 90,
+    maxWidth: 140,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+    padding: 16,
+    border: "2px solid #ffb3ba",
+    borderRadius: 12,
+    background: "#fff9fa",
+    cursor: "pointer",
+    fontSize: 14,
+    fontWeight: 600,
+  },
+  activityEmoji: {
+    fontSize: 28,
+  },
+  activityTitle: {
+    textAlign: "center",
+  },
+  modalOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    zIndex: 1000,
+  },
+  modalContent: {
+    background: "white",
+    borderRadius: 16,
+    padding: 24,
+    maxWidth: 400,
+    width: "100%",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+    position: "relative",
+  },
+  modalHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 16,
+    color: "#fb7185",
+  },
+  modalEmoji: {
+    fontSize: 32,
+  },
+  modalTitle: {
+    flex: 1,
+    margin: 0,
+    fontSize: "1.35rem",
+    color: "#fb7185",
+  },
+  modalClose: {
+    background: "none",
+    border: "none",
+    fontSize: 28,
+    cursor: "pointer",
+    padding: "0 4px",
+    lineHeight: 1,
+    color: "#666",
+  },
+  modalDescription: {
+    margin: "0 0 12px",
+    fontSize: "1rem",
+    lineHeight: 1.5,
+    color: "#666",
+    fontWeight: 600,
+  },
+  modalDetails: {
+    margin: 0,
+    fontSize: 14,
+    color: "#555",
+    lineHeight: 1.6,
+  },
+  learnMoreLink: {
+    display: "inline-block",
+    marginTop: 16,
+    color: "#fb7185",
+    fontWeight: 600,
+    textDecoration: "none",
   },
   input: {
     width: "100%",
