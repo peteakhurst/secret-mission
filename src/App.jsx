@@ -25,15 +25,15 @@ const DEV_MODE = false;
 // 3) Button moves to next stop (no extra unlock code)
 
 const slides = [
-  truth,
-  dateNight,
-  firstmet,
-  kissykissy,
-  picnic,
-  poolside,
-  roo1,
-  tennis,
-  thatOneTime
+  { src: truth, caption: "Our truth ❤️" },
+  { src: dateNight, caption: "Date night ❤️" },
+  { src: firstmet, caption: "When we first met ❤️" },
+  { src: kissykissy, caption: "Kiss kiss 💋" },
+  { src: picnic, caption: "Picnic ❤️" },
+  { src: poolside, caption: "Poolside ❤️" },
+  { src: roo1, caption: "Roo ❤️" },
+  { src: tennis, caption: "Tennis ❤️" },
+  { src: thatOneTime, caption: "That one time ❤️" },
 ];
 
 const stops = [
@@ -217,13 +217,13 @@ export default function App() {
               transition={{ duration: 1.2 }}
               style={styles.polaroid}
             >
-              <img src={slides[slideIndex]} style={styles.polaroidImg} />
-              <div style={styles.polaroidCaption}>Our Moments ❤️</div>
+              <img src={slides[slideIndex].src} style={styles.polaroidImg} />
+              <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
             </motion.div>
           </AnimatePresence>
         </div>
         <div style={styles.countdownSection}>
-          <h1 style={styles.countdownHeading}>Our Adventure Begins In</h1>
+          <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
           <h2 style={styles.countdownTime}>{timeLeft}</h2>
         </div>
       </div>
@@ -387,7 +387,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "2em",
+    padding: "clamp(1rem, 4vw, 2em)",
     color: "#020202",
     overflow: "auto",
   },
@@ -397,37 +397,39 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: "2em",
+    padding: "clamp(1rem, 4vw, 2em)",
   },
   polaroidStage: {
     position: "relative",
-    minHeight: 420,
+    minHeight: "min(480px, 72vh)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexShrink: 0,
   },
   countdownSection: {
-    marginTop: 24,
-    padding: "0 20px",
+    flexShrink: 0,
+    marginTop: "clamp(16px, 4vw, 24px)",
+    padding: "0 clamp(12px, 4vw, 20px)",
     textAlign: "center",
     color: "#1f2937",
   },
   countdownHeading: {
     margin: 0,
-    fontSize: "1.5rem",
+    fontSize: "clamp(1.2rem, 4vw, 1.5rem)",
     fontWeight: 600,
     color: "#fafafa",
   },
   countdownTime: {
     margin: "12px 0 0",
-    fontSize: "2rem",
+    fontSize: "clamp(1.5rem, 6vw, 2rem)",
     fontWeight: 700,
     color: "#fafafa",
   },
 
   polaroid: {
     position: "absolute",
-    width: 360,
+    width: "min(360px, 90vw)",
     background: "white",
     padding: 12,
     paddingBottom: 26,
@@ -437,24 +439,24 @@ const styles = {
 
   polaroidImg: {
     width: "100%",
-    height: 320,
+    height: "min(320px, 80vw)",
     objectFit: "cover",
     objectPosition: "center center",
-    background: "#f3f4f6",  // subtle matte behind photo
+    background: "#f3f4f6",
     borderRadius: 2,
   },
 
   polaroidCaption: {
     textAlign: "center",
     marginTop: 8,
-    fontSize: 14,
+    fontSize: "clamp(12px, 3vw, 14px)",
     fontWeight: 500,
     color: "#1f2937",
   },
   card: {
     position: "relative",
     background: "white",
-    padding: "3em",
+    padding: "clamp(1.5rem, 5vw, 3em)",
     borderRadius: 16,
     maxWidth: 520,
     width: "100%",
