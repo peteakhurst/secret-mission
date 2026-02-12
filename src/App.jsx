@@ -16,6 +16,11 @@ import roo1 from "./assets/photos/roo1.jpeg";
 import tennis from "./assets/photos/tennis.jpeg";
 import thatOneTime from "./assets/photos/thatOneTime.png";
 import truth from "./assets/photos/truth.jpeg";
+import babysFirstDj from "./assets/photos/babysFirstDj.jpeg";
+import brisBane from "./assets/photos/brisBane.jpeg";
+import foodFestival from "./assets/photos/foodFestivalDay.jpeg";
+import leopleuredon from "./assets/photos/Leo-pleuredon.jpeg";
+import newYear from "./assets/photos/newYears-ish.jpeg";
 
 const DEV_MODE = false;
 
@@ -34,6 +39,11 @@ const slides = [
   { src: roo1, caption: "Roo ❤️" },
   { src: tennis, caption: "Tennis ❤️" },
   { src: thatOneTime, caption: "That one time ❤️" },
+  { src: babysFirstDj, caption: "Babys first DJ ❤️" },
+  { src: brisBane, caption: "Brisbane ❤️" },
+  { src: foodFestival, caption: "Food Festival ❤️" },
+  { src: leopleuredon, caption: "Leo pleuredon ❤️" },
+  { src: newYear, caption: "New Year ❤️" },
 ];
 
 const stops = [
@@ -109,6 +119,7 @@ export default function App() {
   const [started, setStarted] = useState(false);
 
   const [showHint, setShowHint] = useState(false);
+  const [wrongGuessCount, setWrongGuessCount] = useState(0);
 
   const stop = stops[index];
 
@@ -162,12 +173,14 @@ export default function App() {
       setInput("");
       setError(false);
       setShowHint(false);
+      setWrongGuessCount(0);
       // 🎉 trigger animation
       setShowCelebrate(true);
       // auto hide after 2.5s
       setTimeout(() => setShowCelebrate(false), 3500);
     } else {
       setError(true);
+      setWrongGuessCount((c) => c + 1);
     }
   }
 
@@ -178,6 +191,7 @@ export default function App() {
       setInput("");
       setError(false);
       setShowHint(false);
+      setWrongGuessCount(0);
     }
   }
 
@@ -187,12 +201,14 @@ export default function App() {
     setInput("");
     setError(false);
     setShowHint(false);
+    setWrongGuessCount(0);
   }
 
   function cheatReveal() {
     setPhase("place");
     setInput("");
     setError(false);
+    setWrongGuessCount(0);
   }
 
   function cheatNext() {
@@ -204,31 +220,31 @@ export default function App() {
     }
   }
 
-  if (phaseApp === "countdown") {
-    return (
-      <div style={styles.countdownPage}>
-        <div style={styles.polaroidStage}>
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={slideIndex}
-              initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              transition={{ duration: 1.2 }}
-              style={styles.polaroid}
-            >
-              <img src={slides[slideIndex].src} style={styles.polaroidImg} />
-              <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        <div style={styles.countdownSection}>
-          <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
-          <h2 style={styles.countdownTime}>{timeLeft}</h2>
-        </div>
-      </div>
-    );
-  }
+  // if (phaseApp === "countdown") {
+  //   return (
+  //     <div style={styles.countdownPage}>
+  //       <div style={styles.polaroidStage}>
+  //         <AnimatePresence mode="sync">
+  //           <motion.div
+  //             key={slideIndex}
+  //             initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             transition={{ duration: 1.2 }}
+  //             style={styles.polaroid}
+  //           >
+  //             <img src={slides[slideIndex].src} style={styles.polaroidImg} />
+  //             <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
+  //           </motion.div>
+  //         </AnimatePresence>
+  //       </div>
+  //       <div style={styles.countdownSection}>
+  //         <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
+  //         <h2 style={styles.countdownTime}>{timeLeft}</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!started) {
     return (
@@ -309,34 +325,49 @@ export default function App() {
               <h4 className="love-light" style={{ fontWeight: "bold" }}>Answer to reveal the next place</h4>
               <p style={{ marginTop: 10 }}>{stop.question}</p>
 
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Your answer"
-                style={styles.input}
-              />
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Your answer"
+                  style={styles.input}
+                  inputMode="text"
+                  name="answer"
+                />
+              </div>
 
               {error && <p style={{ color: "red" }}>Not quite — try again 💭</p>}
 
-              <button onClick={checkAnswer} style={styles.button}>
-                Reveal Place
-              </button>
+              <div style={styles.buttonRow}>
+                {wrongGuessCount >= 3 && (
+                  <button
+                    onClick={() => setShowHint(true)}
+                    style={{ ...styles.button, background: "#f59e0b", marginTop: 0 }}
+                  >
+                    Hint 💡
+                  </button>
+                )}
+                {wrongGuessCount < 3 && <div />}
+                <button onClick={checkAnswer} style={{ ...styles.button, marginTop: 0 }}>
+                  Reveal Place
+                </button>
+              </div>
 
               {DEV_MODE && (
-                <button
-                  onClick={cheatReveal}
-                  style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
-                >
-                  Cheat: Reveal
-                </button>
+                <div style={{ marginTop: 8, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <button onClick={cheatReveal} style={{ ...styles.button, background: "#9ca3af" }}>
+                    Cheat: Reveal
+                  </button>
+                  <button onClick={cheatNext} style={{ ...styles.button, background: "#9ca3af" }}>
+                    Cheat: Next Stop →
+                  </button>
+                </div>
               )}
-              {DEV_MODE && (
-                <button
-                  onClick={cheatNext}
-                  style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
-                >
-                  Cheat: Next Stop →
-                </button>
+
+              {showHint && (
+                <p style={{ marginTop: 10, fontStyle: "italic" }}>
+                  Hint: The answer is <strong>{stop.answer}</strong>
+                </p>
               )}
             </>
           ) : (
@@ -349,31 +380,31 @@ export default function App() {
                 <p>{stop.task}</p>
               </div>
 
-              {index < stops.length - 1 ? (
-                <button onClick={nextStop} style={styles.button}>
-                  Next Stop →
+              <div style={styles.buttonRow}>
+                <button
+                  onClick={() => setShowHint(true)}
+                  style={{ ...styles.button, background: "#f59e0b", marginTop: 0 }}
+                >
+                  Hint 💡
                 </button>
-              ) : (
-                <button onClick={reset} style={styles.button}>
-                  Restart Hunt
-                </button>
+                {index < stops.length - 1 ? (
+                  <button onClick={nextStop} style={{ ...styles.button, marginTop: 0 }}>
+                    Next Stop →
+                  </button>
+                ) : (
+                  <button onClick={reset} style={{ ...styles.button, marginTop: 0 }}>
+                    Restart Hunt
+                  </button>
+                )}
+              </div>
+
+              {showHint && (
+                <p style={{ marginTop: 10, fontStyle: "italic" }}>
+                  Hint: The answer is <strong>{stop.answer}</strong>
+                </p>
               )}
             </>
           )}
-          <>
-            <button
-              onClick={() => setShowHint(true)}
-              style={{ ...styles.button, background: "#f59e0b", marginLeft: 8 }}
-            >
-              Hint 💡
-            </button>
-
-            {showHint && (
-              <p style={{ marginTop: 10, fontStyle: "italic" }}>
-                Hint: The answer is <strong>{stop.answer}</strong>
-              </p>
-            )}
-          </>
         </motion.div>
       </div>
     </>
@@ -478,6 +509,13 @@ const styles = {
     marginTop: 12,
     borderRadius: 8,
     border: "1px solid #ddd",
+  },
+  buttonRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 12,
+    gap: 12,
   },
   button: {
     marginTop: 12,
