@@ -220,31 +220,31 @@ export default function App() {
     }
   }
 
-  // if (phaseApp === "countdown") {
-  //   return (
-  //     <div style={styles.countdownPage}>
-  //       <div style={styles.polaroidStage}>
-  //         <AnimatePresence mode="sync">
-  //           <motion.div
-  //             key={slideIndex}
-  //             initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-  //             animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-  //             exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-  //             transition={{ duration: 1.2 }}
-  //             style={styles.polaroid}
-  //           >
-  //             <img src={slides[slideIndex].src} style={styles.polaroidImg} />
-  //             <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
-  //           </motion.div>
-  //         </AnimatePresence>
-  //       </div>
-  //       <div style={styles.countdownSection}>
-  //         <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
-  //         <h2 style={styles.countdownTime}>{timeLeft}</h2>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (phaseApp === "countdown") {
+    return (
+      <div style={styles.countdownPage}>
+        <div style={styles.polaroidStage}>
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={slideIndex}
+              initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+              transition={{ duration: 1.2 }}
+              style={styles.polaroid}
+            >
+              <img src={slides[slideIndex].src} style={styles.polaroidImg} />
+              <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <div style={styles.countdownSection}>
+          <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
+          <h2 style={styles.countdownTime}>{timeLeft}</h2>
+        </div>
+      </div>
+    );
+  }
 
   if (!started) {
     return (
