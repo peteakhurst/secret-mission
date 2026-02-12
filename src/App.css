@@ -1,0 +1,15 @@
+body {
+  --s: 150px;
+  --c1: #e7525b;
+  --c2: #ffa8a8;
+  
+  --_g: 80%,var(--c1) 25.4%,#0000 26%;
+  background:
+   radial-gradient(at 80% var(--_g)),
+   radial-gradient(at 20% var(--_g)),
+   conic-gradient(from -45deg at 50% 41%,var(--c1) 90deg,var(--c2) 0) 
+      calc(var(--s)/2) 0;
+  background-size: var(--s) var(--s);
+  background-attachment: fixed; /* Ensures background covers full viewport on scroll/Safari */
+}
+
