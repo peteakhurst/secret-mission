@@ -7,7 +7,7 @@ import Lottie from "lottie-react";
 import loveCat from "./assets/love-cat.json";
 import heartsAnim from "./assets/hearts.json";
 
-const DEV_MODE = false;
+const DEV_MODE = true;
 
 // Simplified flow per stop:
 // 1) Show question
@@ -178,122 +178,122 @@ export default function App() {
     <>
       <div style={styles.page}>
         <motion.div
-    key={index + phase}
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    style={styles.card}
-  >{/* Progress Indicator */}
-    <div style={{ textAlign: "center", marginBottom: 16 }}>
+          key={index + phase}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={styles.card}
+        >{/* Progress Indicator */}
+          <div style={{ textAlign: "center", marginBottom: 16 }}>
 
-      <Lottie
-        animationData={loveCat}
-        loop={true}
-        style={{ height: 150 }}
-      />
+            <Lottie
+              animationData={loveCat}
+              loop={true}
+              style={{ height: 150 }}
+            />
 
-      <div style={styles.progressBarOuter}>
-        <div
-          style={{
-            ...styles.progressBarInner,
-            width: `${progressPercent}%`,
-          }}
-        />
-      </div>
+            <div style={styles.progressBarOuter}>
+              <div
+                style={{
+                  ...styles.progressBarInner,
+                  width: `${progressPercent}%`,
+                }}
+              />
+            </div>
 
-      <p style={{ marginTop: 6 }}>
-        Stop {index + 1} of {stops.length}
-      </p>
-    </div>
-    {showCelebrate && (
-      <motion.div
-        style={styles.celebrateWrap}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: fadeCelebrate ? 0 : 1 }}
-        transition={{ duration: 0.6 }}
-        onAnimationComplete={() => {
-          if (fadeCelebrate) setShowCelebrate(false);
-        }}
-      >
-        <Lottie
-          animationData={heartsAnim}
-          loop={false}
-          style={{ height: 580 }}
-        />
-      </motion.div>
-    )}
-    <h2>❤️ Valentines Day Adventure</h2>
-    <h4>A Scavenger Hunt</h4>
+            <p style={{ marginTop: 6 }}>
+              Stop {index + 1} of {stops.length}
+            </p>
+          </div>
+          {showCelebrate && (
+            <motion.div
+              style={styles.celebrateWrap}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: fadeCelebrate ? 0 : 1 }}
+              transition={{ duration: 0.6 }}
+              onAnimationComplete={() => {
+                if (fadeCelebrate) setShowCelebrate(false);
+              }}
+            >
+              <Lottie
+                animationData={heartsAnim}
+                loop={false}
+                style={{ height: 580 }}
+              />
+            </motion.div>
+          )}
+          <h2>❤️ Valentines Day Adventure</h2>
+          <h4>A Scavenger Hunt</h4>
 
-    {phase === "question" ? (
-      <>
-        <h2>Answer to reveal the next place</h2>
-        <p style={{ marginTop: 10 }}>{stop.question}</p>
+          {phase === "question" ? (
+            <>
+              <h2>Answer to reveal the next place</h2>
+              <p style={{ marginTop: 10 }}>{stop.question}</p>
 
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Your answer"
-          style={styles.input}
-        />
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Your answer"
+                style={styles.input}
+              />
 
-        {error && <p style={{ color: "red" }}>Not quite — try again 💭</p>}
+              {error && <p style={{ color: "red" }}>Not quite — try again 💭</p>}
 
-        <button onClick={checkAnswer} style={styles.button}>
-          Reveal Place
-        </button>
+              <button onClick={checkAnswer} style={styles.button}>
+                Reveal Place
+              </button>
 
-        {DEV_MODE && (
-          <button
-            onClick={cheatReveal}
-            style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
-          >
-            Cheat: Reveal
-          </button>
-        )}
-        {DEV_MODE && (
-          <button
-            onClick={cheatNext}
-            style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
-          >
-            Cheat: Next Stop →
-          </button>
-        )}
-      </>
-    ) : (
-      <>
-        <h2>{stop.title}</h2>
-        <pre style={styles.clue}>{stop.clue}</pre>
+              {DEV_MODE && (
+                <button
+                  onClick={cheatReveal}
+                  style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
+                >
+                  Cheat: Reveal
+                </button>
+              )}
+              {DEV_MODE && (
+                <button
+                  onClick={cheatNext}
+                  style={{ ...styles.button, background: "#9ca3af", marginLeft: 8 }}
+                >
+                  Cheat: Next Stop →
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <h2>{stop.title}</h2>
+              <pre style={styles.clue}>{stop.clue}</pre>
 
-        <div style={styles.taskBox}>
-          <strong>Mini Mission:</strong>
-          <p>{stop.task}</p>
-        </div>
+              <div style={styles.taskBox}>
+                <strong>Mini Mission:</strong>
+                <p>{stop.task}</p>
+              </div>
 
-        {index < stops.length - 1 ? (
-          <button onClick={nextStop} style={styles.button}>
-            Next Stop →
-          </button>
-        ) : (
-          <button onClick={reset} style={styles.button}>
-            Restart Hunt
-          </button>
-        )}
-      </>
-    )}
-    <>
-      <button
-        onClick={() => setShowHint(true)}
-        style={{ ...styles.button, background: "#f59e0b", marginLeft: 8 }}
-      >
-        Hint 💡
-      </button>
+              {index < stops.length - 1 ? (
+                <button onClick={nextStop} style={styles.button}>
+                  Next Stop →
+                </button>
+              ) : (
+                <button onClick={reset} style={styles.button}>
+                  Restart Hunt
+                </button>
+              )}
+            </>
+          )}
+          <>
+            <button
+              onClick={() => setShowHint(true)}
+              style={{ ...styles.button, background: "#f59e0b", marginLeft: 8 }}
+            >
+              Hint 💡
+            </button>
 
-      {showHint && (
-        <p style={{ marginTop: 10, fontStyle: "italic" }}>
-          Hint: The answer is <strong>{stop.answer}</strong>
-        </p>
-      )}
-    </>
+            {showHint && (
+              <p style={{ marginTop: 10, fontStyle: "italic" }}>
+                Hint: The answer is <strong>{stop.answer}</strong>
+              </p>
+            )}
+          </>
         </motion.div>
       </div>
     </>
