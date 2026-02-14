@@ -53,14 +53,14 @@ const stops = [
     title: "Stop 1: Cherry Tree Hotel",
     clue: `Our story didn’t start with once upon a time — it started with a drink, a laugh, and what we both wanted in life.
 Where the cherry doesn’t grow on a tree — but poured in one glass, shared with me. `,
-    task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside.",
+    task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside, for a brief moment, then we can head to the next stop.",
   },
   {
     question: "His name is on the door, But he’s not the bartender (probably).",
     answer: "fred",
     title: "Stop 2: Fred’s Bar",
     clue: `Not mine, not yours — but Fred’s instead. Where stories were shared and thing's was said.`,
-    task: "Order the sourdough and some drinks and sit outside.",
+    task: "Order some sourdough and some drinks and sit outside, then we can head to the next stop.",
   },
   {
     question: "One grows in soil, one’s poured in a cup, put them together — that’s our next stop.",
@@ -70,33 +70,26 @@ Where the cherry doesn’t grow on a tree — but poured in one glass, shared wi
     task: "Share something you appreciated early in our relationship but never said.",
   },
   {
-    question: "Where things are forged with fire and art — like good drinks, good talks, and the start of a heart.",
-    answer: "blacksmith",
-    title: "Stop 4: Blacksmith",
-    clue: `Where things are forged with fire and art —
-like good drinks, good talks, and the start of a heart.`,
-    task: "Toast: one thing we must do this year, travel, holiday, or something else.",
-  },
-  {
     question: "Which rooftop spot did we go to in Richmond, that can be a 'drag' ?",
     answer: "harlow",
-    title: "Stop 5: Harlow Bar",
+    title: "Stop 4: Harlow Bar",
     clue: `Up we went where the city could see us,
 where we thought we were alone. Lets head to the rooftop and reclaim it as our own.`,
     task: "Take a selfie recreating an early-date vibe photo and share it with me.",
   },
   {
-    question: "A house by name, not by design! Where to next?",
-    answer: "union",
-    title: "Stop 6: Union House",
-    clue: `A house with no bedrooms, but plenty of cheer.
-We didn’t live there — but memories do.`,
-    task: "Each write one favorite memory from our first 3 months, this can be shared at the next stop.",
+    question: "Where things are forged with fire and art — like good drinks, good talks, and the start of a heart.",
+    answer: "blacksmith",
+    title: "Stop 5: Blacksmith",
+    clue: `Where things are forged with fire and art —
+like good drinks, good talks, and the start of a heart.`,
+    task: "Toast: one thing we must do this year, travel, holiday, or something else.",
   },
+
   {
     question: "There’s a place in our story waiting for a rewrite.",
     answer: "spelt",
-    title: "Stop 7: Spelt Pizzeria",
+    title: "Stop 6: Spelt Pizzeria",
     clue: "Let's reclaim a bad memory, to a better one. Just add garlic (bread)",
     task: "Present your final note, kiss or choose what you would like to do next below ❤️",
   },
@@ -107,7 +100,7 @@ const eveningActivities = [
     id: 0,
     title: "Continue on with drinks and dessert",
     emoji: "🍽️",
-    description: "We can head to the cinema room, to watch a movie and have some drinks. You've earned it after your adventure!",
+    description: "We can head to the cinema room, to watch a movie and have some drinks. You've earned it after our adventure!",
     details: "No words needed, lets just go and enjoy each other ❤️",
     url: " "
   },
@@ -116,23 +109,15 @@ const eveningActivities = [
     title: "Symphony in the Park",
     emoji: "🎶",
     description: "Go to the Symphony in the Park and enjoy the music.",
-    details: "We can go to IGA grab some snacks and head to the bowl to watch some symphony in the park",
+    details: "We can go grab some picnic snacks and head to the bowl to watch some symphony in the park",
     url: "https://www.artscentremelbourne.com.au/whats-on/2026/seasons/mso/50-years-of-abc-classic",
   },
   {
     id: 2,
-    title: "Go ice skating",
-    emoji: "⛸️",
-    description: "We can go ice skating and have some fun",
-    details: "An activity to end the adventure on a fun note",
-    url: "https://obrienicehouse.com.au/"
-  },
-  {
-    id: 3,
-    title: "IOU: A romantic dinner and Wuthering Heights date",
+    title: "Save ourselves for tomorrow and our staycation",
     emoji: "💰",
-    description: "We can go to a restaurant and have a romantic dinner and watch Wuthering Heights",
-    details: "A romantic dinner and Wuthering Heights date",
+    description: "We can save ourselves for tomorrow and our staycation.",
+    details: "Room service, drinks, lingerie, bath robes and chill",
     url: ""
   },
 ];
