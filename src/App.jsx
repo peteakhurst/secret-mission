@@ -56,11 +56,12 @@ Where the cherry doesn’t grow on a tree — but poured in one glass, shared wi
     task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside, for a brief moment, then we can head to the next stop.",
   },
   {
-    question: "His name is on the door, But he’s not the bartender (probably).",
-    answer: "fred",
-    title: "Stop 2: Fred’s Bar",
-    clue: `Not mine, not yours — but Fred’s instead. Where stories were shared and thing's was said.`,
-    task: "Order some sourdough and some drinks and sit outside, then we can head to the next stop.",
+    question: "I'm your prince charming, but I'm not your prince. Where are we going next?",
+    answer: "prince",
+    title: "Stop 2: Prince Alfred Hotel",
+    clue: `We used to come here for a little drink, just long enough to pause and think.
+    Let’s start out slow, just like before, then let's see what our afternoon has in store.`,
+    task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside, for a brief moment, then we can head to the next stop.",
   },
   {
     question: "One grows in soil, one’s poured in a cup, put them together — that’s our next stop.",
@@ -70,6 +71,15 @@ Where the cherry doesn’t grow on a tree — but poured in one glass, shared wi
     task: "Share something you appreciated early in our relationship but never said.",
   },
   {
+    question: "Where things are forged with fire and art — like good drinks, good talks, and the start of a heart.",
+    answer: "blacksmith",
+    title: "Stop 2: Blacksmith",
+    clue: `Where things are forged with fire and art —
+like good drinks, good talks, and the start of a heart.`,
+    task: "Toast: one thing we must do this year, travel, holiday, or something else.",
+  },
+
+  {
     question: "Which rooftop spot did we go to in Richmond, that can be a 'drag' ?",
     answer: "harlow",
     title: "Stop 4: Harlow Bar",
@@ -78,14 +88,12 @@ where we thought we were alone. Lets head to the rooftop and reclaim it as our o
     task: "Take a selfie recreating an early-date vibe photo and share it with me.",
   },
   {
-    question: "Where things are forged with fire and art — like good drinks, good talks, and the start of a heart.",
-    answer: "blacksmith",
-    title: "Stop 5: Blacksmith",
-    clue: `Where things are forged with fire and art —
-like good drinks, good talks, and the start of a heart.`,
-    task: "Toast: one thing we must do this year, travel, holiday, or something else.",
+    question: "His name is on the door, But he’s not the bartender (probably).",
+    answer: "fred",
+    title: "Stop 5: Fred’s Bar",
+    clue: `Not mine, not yours — but Fred’s instead. Where stories were shared and thing's was said.`,
+    task: "Order some sourdough and some drinks and sit outside, then we can head to the next stop.",
   },
-
   {
     question: "There’s a place in our story waiting for a rewrite.",
     answer: "spelt",
