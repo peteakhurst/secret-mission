@@ -53,7 +53,7 @@ const stops = [
     title: "Stop 1: Cherry Tree Hotel",
     clue: `Our story didn’t start with once upon a time — it started with a drink, a laugh, and what we both wanted in life.
 Where the cherry doesn’t grow on a tree — but poured in one glass, shared with me. `,
-    task: "As the pub is closed, lets go to IGA grab a drink and sit on the bench outside, for a brief moment, then we can head to the next stop.",
+    task: "As the pub is closed, lets go to sit on the bench outside and take quick selfie, then we can head to the next stop.",
   },
   {
     question: "I'm your prince charming, but I'm not your prince. Where are we going next?",
@@ -149,10 +149,11 @@ export default function App() {
   const stop = stops[index];
 
   const [phaseApp, setPhaseApp] = useState("countdown");
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState("2:00");
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const TARGET_DATE = new Date("2026-02-14T13:30:00");
+  // 2-minute countdown: end time set once when countdown phase is first shown
+  const [countdownEndTime] = useState(() => Date.now() + 2 * 60 * 1000);
 
   // Dev bypass: run in console to skip countdown or jump to evening activities
   useEffect(() => {
@@ -171,26 +172,26 @@ export default function App() {
     };
   }, []);
 
-  // countdown timer
+  // 2-minute countdown timer; when it hits 0, show intro screen
   useEffect(() => {
     const timer = setInterval(() => {
-      const now = new Date();
-      const diff = TARGET_DATE - now;
+      const now = Date.now();
+      const diff = countdownEndTime - now;
 
       if (diff <= 0) {
-        setTimeLeft("Ready ❤️");
+        setTimeLeft("0:00");
+        setPhaseApp("welcome");
         return;
       }
 
-      const h = Math.floor(diff / 1000 / 60 / 60);
-      const m = Math.floor((diff / 1000 / 60) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-
-      setTimeLeft(`${h}h ${m}m ${s}s`);
+      const totalSeconds = Math.ceil(diff / 1000);
+      const m = Math.floor(totalSeconds / 60);
+      const s = totalSeconds % 60;
+      setTimeLeft(`${m}:${s.toString().padStart(2, "0")}`);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [countdownEndTime]);
 
 
   // slideshow rotator
@@ -268,31 +269,31 @@ export default function App() {
     }
   }
 
-  if (phaseApp === "countdown") {
-    return (
-      <div style={styles.countdownPage}>
-        <div style={styles.polaroidStage}>
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={slideIndex}
-              initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
-              transition={{ duration: 1.2 }}
-              style={styles.polaroid}
-            >
-              <img src={slides[slideIndex].src} style={styles.polaroidImg} />
-              <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        <div style={styles.countdownSection}>
-          <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
-          <h2 style={styles.countdownTime}>{timeLeft}</h2>
-        </div>
-      </div>
-    );
-  }
+  // if (phaseApp === "countdown") {
+  //   return (
+  //     <div style={styles.countdownPage}>
+  //       <div style={styles.polaroidStage}>
+  //         <AnimatePresence mode="sync">
+  //           <motion.div
+  //             key={slideIndex}
+  //             initial={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             animate={{ opacity: 1, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             exit={{ opacity: 0, rotate: slideIndex % 2 === 0 ? -5 : 5 }}
+  //             transition={{ duration: 1.2 }}
+  //             style={styles.polaroid}
+  //           >
+  //             <img src={slides[slideIndex].src} style={styles.polaroidImg} />
+  //             <div className="beth" style={styles.polaroidCaption}>{slides[slideIndex].caption}</div>
+  //           </motion.div>
+  //         </AnimatePresence>
+  //       </div>
+  //       <div style={styles.countdownSection}>
+  //         <h1 className="beth" style={styles.countdownHeading}>Our Adventure Begins In</h1>
+  //         <h2 style={styles.countdownTime}>{timeLeft}</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!started) {
     return (
